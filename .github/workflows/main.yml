@@ -31,7 +31,7 @@ jobs:
           file: ./src/Dockerfile
           push: true
           tags: |
-            francielrezende/conversao-temperatura:${{github.run_number}}
+            francielrezende/conversao-temperatura:v${{github.run_number}}
             francielrezende/conversao-temperatura:latest
       - name: step3
         run: echo "Push the images to the repository (Docker HUB"
@@ -41,8 +41,16 @@ jobs:
     steps:
       - name: step1
         run: echo "Download code base"
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
       - name: step2
         run: echo "Authentication on AWS"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_ACCESS_KEY_VALUE
+          aws-region: us-east-1
       - name: step3
         run: echo "Microservices deployment on kubernetes"
       
